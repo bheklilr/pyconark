@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from redactor.fields import RedactorField
+
 from django.contrib.auth.models import User
-from django.utils.text import slugify
 from django.db import models
+from django.utils.text import slugify
+from redactor.fields import RedactorField
+
 '''
     Models for Conference Website
 '''
@@ -28,13 +30,13 @@ class ConferenceLocation(models.Model):
         return self.name
 
     def __str__(self):
-        return self.title
+        return self.name
 
 class ConferenceDetail(models.Model):
     '''Details about our conference.
     '''
     title        = models.CharField(max_length=200)
-    location     = models.ForeignKey(Location)
+    location = models.ForeignKey(ConferenceLocation)
     start_dt 	 = models.DateTimeField(verbose_name='Start Date/Time')
     end_dt 	 	 = models.DateTimeField(null=True,blank=True,verbose_name='End Date/Time')
     date_created = models.DateTimeField(auto_now_add=True)
@@ -67,4 +69,4 @@ class ConferencePage(models.Model):
     def save(self, *args, **kwargs):
         # saving the slug everytime from the title
         self.slug = slugify(self.title)
-        super(Page, self).save(*args, **kwargs)
+        super(ConferencePage, self).save(*args, **kwargs)
