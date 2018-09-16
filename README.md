@@ -14,5 +14,8 @@ Need a way to use whatever WYSIWIG we want, without modifying model code.
 
 ## Initial Setup
 There's a command hook that can be used to do the whole initial setup and start the server fresh.
+```commandline
 python manage.py install_main
+```
+
 
