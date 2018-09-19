@@ -1,2 +1,5 @@
 Django==1.11.13
 django-wysiwyg-redactor==0.5.1
+psycopg2==2.7.3
+gunicorn==19.7.1
+django-heroku==0.3.1
