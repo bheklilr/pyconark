@@ -25,7 +25,9 @@ SECRET_KEY = '!j2b-96x(#c4*%io+m*3dm!5b72k+6j7^tyfrb^%!q#&986fh7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "pyconark.herokuapp.com",
+]
 
 
 # Application definition
