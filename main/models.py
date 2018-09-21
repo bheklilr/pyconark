@@ -70,3 +70,27 @@ class ConferencePage(models.Model):
         # saving the slug everytime from the title
         self.slug = slugify(self.title)
         super(ConferencePage, self).save(*args, **kwargs)
+
+class Speaker(models.Model):
+    first_name   = models.CharField(max_length=250)
+    last_name    = models.CharField(max_length=255)
+    description  = RedactorField(verbose_name='description', upload_to='speaker_description')
+    slug         = models.SlugField()
+    phone        = models.CharField(max_length=20, null=True, blank=True)
+    email        = models.EmailField()
+    facebook     = models.URLField()
+    twitter      = models.URLField()
+    github       = models.URLField()
+    linkedin     = models.URLField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return "{} {}".format(self.first_name, self.last_name)
+
+    def __str__(self):
+        return "{} {}".format(self.first_name, self.last_name)
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify("{} {}".format(self.first_name, self.last_name))
+        super(Speaker, self).save(*args, **kwargs)
