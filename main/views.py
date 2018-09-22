@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 
+from .models import ConferenceDetail
+
 
 # TODO: Implement some views
 def index(request):
@@ -35,5 +37,7 @@ def index(request):
         "room": "ROOM",
         "time": "TIME"
     })
-
-    return render(request, 'main/index.html', {'speakers': speakers, 'schedule': schedule})
+    conferenceDetail = ConferenceDetail.objects.all()
+    conferenceDetail[0]
+    return render(request, 'main/index.html',
+                  {'speakers': speakers, 'schedule': schedule, 'banner': conferenceDetail[0]})

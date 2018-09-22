@@ -21,7 +21,7 @@ class ConferenceLocation(models.Model):
     fax			 = models.CharField(max_length=20, null=True, blank=True)
     latitude	 = models.FloatField(null=True, blank=True)
     longitude	 = models.FloatField(null=True, blank=True)
-    author 		 = models.ForeignKey(User)
+    author = models.ForeignKey(User, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
 

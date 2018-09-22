@@ -7,15 +7,17 @@
                 <div class="banner-content col-lg-9 col-md-12">
                     <h6>Central Arkansas Python Artists</h6>
                     <h1 class="text-white">
-                       		Python Conference 2019
+                        {{ banner.title }}
                     </h1>
                     <!-- Configure the Timer in main.js "var countDownDate" -->
                     <div class="countdown">
                         <div id="timer" class="text-white"></div>
                     </div>
 
-                    <h4><span class="lnr lnr-calendar-full"></span>  October 5th, 2019</h4>
-                    <h4><sp  an class="lnr lnr-map"></span>University of Arkansas at Little Rock</h4>
+                    <h4><span class="lnr lnr-calendar-full"></span>{{ banner.start_dt }}</h4>
+                    <h4>
+                        <sp an class="lnr lnr-map"></span>
+                        {{ banner.location.address }}</h4>
                 </div>
             </div>
         </div>
