@@ -4,7 +4,6 @@
     <div class="container-fluid">
         <div class="row no-padding">
             <div class="active-speaker-carusel col-lg-12 no-padding">
-                {% comment %} This is an example speaker {% endcomment %}
                 {% for speaker in speakers %}
                     <div class="single-speaker item">
                         <div class="container">
@@ -13,12 +12,11 @@
                                     <img src="img/s1.jpg" alt="">
                                 </div>
                                 <div class="col-md-6 speaker-info no-padding">
-                                    <h6 class="text-uppercase">speaker 01</h6>
+                                    <h6 class="text-uppercase">{{ speaker.company }}</h6>
                                     <h1 class="text-white">{{ speaker.name }}</h1>
-                                    <p>
-                                        {{ speaker.description }}
-                                    </p>
-                                    <p><span class="lnr lnr-location"></span>{{ speaker.contact }}</p>
+                                    <p>{{ speaker.bio }}</p>
+                                    <p><span class="lnr lnr-phone-handset"></span>{{ speaker.phone }}</p>
+                                    <p><span class="lnr lnr-location"></span>{{ speaker.email }}</p>
                                     <ul>
                                         <a href="#"><i class="fa fa-facebook"></i></a>
                                         <a href="#"><i class="fa fa-twitter"></i></a>
@@ -30,6 +28,7 @@
                         </div>
                     </div>
                 {% endfor %}
+
             </div>
         </div>
     </div>

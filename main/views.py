@@ -10,10 +10,18 @@ def index(request):
     speakers = []
     speakers.append({
         "name": "BOB JOHNSON",
-        "contact": "1234567890",
-        "description": "email@domain.com"
+        "company": "Initech",
+        "phone": "1234567890",
+        "bio": "A short description about the speaker's background and qualifications",
+        "email": "email@domain.com"
     })
-
+    speakers.append({
+        "name": "Wally West",
+        "company": "Star Labs",
+        "phone": "1234567890",
+        "bio": "This guy runs really fast. He's famous, and never screws up the timeline by time traveling.",
+        "email": "email@domain.com"
+    })
     schedule = []
     schedule.append({
         "title": "TITLE",
