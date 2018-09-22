@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -119,12 +120,22 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
-
-STATIC_URL = '/static/'
-
+# - https://docs.djangoproject.com/en/1.11/howto/static-files/
+# Amazon S3 Storage Configurations added later
+# - https://simpleisbetterthancomplex.com/tutorial/2017/08/01/how-to-setup-amazon-s3-in-a-django-project.html
 STATICFILES_DIRS = (
   os.path.join(BASE_DIR, 'static/'),
 )
-
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+
+AWS_ACCESS_KEY_ID = os.getenv('S3_ACCESS_ID')  # type: str # TODO: Externalize in System Variables
+AWS_SECRET_ACCESS_KEY = os.getenv('S3_SECRET') # TODO: Externalize in System Variables
+AWS_STORAGE_BUCKET_NAME = 'pyconark-dev-a' # TODO: Externalize in System Variables
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
