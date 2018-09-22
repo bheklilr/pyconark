@@ -6,7 +6,6 @@ from django.db import models
 from django.utils.text import slugify
 from redactor.fields import RedactorField
 
-
 ''' Models for Conference Website
 '''
 
@@ -181,4 +180,4 @@ class ConferenceSponsor(models.Model):
     
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
-        super(Price, self).save(*args, **kwargs)
+        super(ConferenceSponsor, self).save(*args, **kwargs)
