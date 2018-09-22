@@ -13,32 +13,34 @@
         <div class="row">
             <div class="table-wrap col-lg-12">
                 <table class="schdule-table table table-bordered">
-                        <thead class="thead-light">
+                    <thead class="thead-light">
+                    <tr>
+                        <th class="head" scope="col">sl</th>
+                        <th class="head" scope="col">session</th>
+                        <th class="head" scope="col">speaker</th>
+                        <th class="head" scope="col">venue</th>
+                        <th class="head" scope="col">time</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% comment %} Copy the following template to add new items to the list. {% endcomment %}
+                    {% for event in schedule %}
                         <tr>
-                            <th class="head" scope="col">sl</th>
-                            <th class="head" scope="col">session</th>
-                            <th class="head" scope="col">speaker</th>
-                            <th class="head" scope="col">venue</th>
-                            <th class="head" scope="col">time</th>
+                            <th class="name" scope="row">{{ index }}</th>
+                            <td>{{ event.title }}</td>
+                            <td>{{ event.name }}</td>
+                            <td>{{ event.room }}</td>
+                            <td>{{ event.time }}</td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        {% comment %} Copy the following template to add new items to the list. {% endcomment %}
-                        {% include "main/partials/schedule-template.html" with
-                            index="01"
-                            title="A title of a talk"
-                            name="Speaker Person"
-                            room="Room 1A"
-                            time="12:00"
-                        %}
-                        <!-- <tr>
-                            <th class="name" scope="row">01</th>
-                            <td>Reception & Tailing Seats</td>
-                            <td>Isabelle Cooper</td>
-                            <td>3rd Hall Room</td>
-                            <td>02.00</td>
-                        </tr> -->
-                        </tbody>
+                    {% endfor %}
+                    <!-- <tr>
+                        <th class="name" scope="row">01</th>
+                        <td>Reception & Tailing Seats</td>
+                        <td>Isabelle Cooper</td>
+                        <td>3rd Hall Room</td>
+                        <td>02.00</td>
+                    </tr> -->
+                    </tbody>
                 </table>
             </div>
         </div>

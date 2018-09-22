@@ -5,11 +5,31 @@
         <div class="row no-padding">
             <div class="active-speaker-carusel col-lg-12 no-padding">
                 {% comment %} This is an example speaker {% endcomment %}
-                {% include "main/partials/speaker-template.html" with
-                    name="Speaker Person"
-                    contact="speaker.person@email.com"
-                    description="This is the description for a speaker. We should actually get some of those"
-                %}
+                {% for speaker in speakers %}
+                    <div class="single-speaker item">
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <div class="col-md-6 speaker-img no-padding">
+                                    <img src="img/s1.jpg" alt="">
+                                </div>
+                                <div class="col-md-6 speaker-info no-padding">
+                                    <h6 class="text-uppercase">speaker 01</h6>
+                                    <h1 class="text-white">{{ speaker.name }}</h1>
+                                    <p>
+                                        {{ speaker.description }}
+                                    </p>
+                                    <p><span class="lnr lnr-location"></span>{{ speaker.contact }}</p>
+                                    <ul>
+                                        <a href="#"><i class="fa fa-facebook"></i></a>
+                                        <a href="#"><i class="fa fa-twitter"></i></a>
+                                        <a href="#"><i class="fa fa-dribbble"></i></a>
+                                        <a href="#"><i class="fa fa-behance"></i></a>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>
