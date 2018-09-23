@@ -10,7 +10,7 @@ import datetime
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
-from main.models import ConferenceDetail, ConferenceLocation
+from main.models import ConferenceDetail, ConferenceLocation, NavBarItem
 
 DUMMY_POST_MESSAGE = """
             <p>
@@ -57,13 +57,13 @@ class Command(BaseCommand):
     def _createDefaultDatabaseContent(self):
         dateFormatStr = "%m-%d-%Y %H:%M:%S"
         conferenceDate = "10-05-2019 10:00:00"
+
         # Conference Location
         conferenceLocation = ConferenceLocation()
         conferenceLocation.address = "123 somewhere Rd"
         conferenceLocation.city = "Somwhere City"
         conferenceLocation.name = "University Auditorium"
         conferenceLocation.zip_code = 72204
-
         conferenceLocation.save()
 
         # Conference Detail
@@ -72,6 +72,14 @@ class Command(BaseCommand):
         conferenceDetail.title = "PyCon Arkansas 2019"
         conferenceDetail.location = conferenceLocation
         conferenceDetail.save()
+
+        # Create the Home button on the nav bar
+        navItem = NavBarItem()
+        navItem.destinationPath = "#"
+        navItem.display = "Home"
+        navItem.isActive = True
+        navItem.type = "LABEL"
+        navItem.save()
         # TODO: Create some default objects and data
         pass
 
