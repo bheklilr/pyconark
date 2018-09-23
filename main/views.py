@@ -38,9 +38,7 @@ def index(request):
         "time": "TIME"
     })
     navbar = NavBarItem.objects.all()
-    for nav in navbar:
-        print(nav.type)
-        print(nav.destinationPath)
+
     conferenceDetail = ConferenceDetail.objects.all()
     # TODO: Fix this so it's not so dangerous....
     return render(request, 'main/index.html',
