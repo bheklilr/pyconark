@@ -1,4 +1,4 @@
-version: '3'
+version: "3.3"
 
 services:
   db:
@@ -6,7 +6,9 @@ services:
     networks:
       - pyconark
     volumes:
-        - .:/dbdata
+      - type: volume
+        source: dbdata
+        target: /data/db
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
@@ -15,11 +17,12 @@ services:
     networks:
       - pyconark
     ports:
-      - "8000:8000"
+      - "80:8000"
     depends_on:
       - db
 
 networks:
   pyconark:
 
-
+volumes:
+  dbdata:
