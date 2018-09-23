@@ -87,3 +87,9 @@ local_settings.py
 
 .env
 db.sqlite3
+.idea/vcs.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/preferred-vcs.xml
+.idea/pyconark.iml
+.idea/workspace.xml
