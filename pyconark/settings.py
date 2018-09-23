@@ -26,7 +26,7 @@ SECRET_KEY = '!j2b-96x(#c4*%io+m*3dm!5b72k+6j7^tyfrb^%!q#&986fh7'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "pyconark.herokuapp.com",
+    "pyconark.herokuapp.com", "127.0.0.1", "localhost", "0.0.0.0"
 ]
 
 
