@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.contrib import admin
 
 from .models import ConferenceDetail, ConferenceLocation, ConferencePage, ConferenceSponsor, Speaker, SessionLocation, \
-    Proposal, Price
+    Proposal, Price, NavBarItem
 
 # Register your models here.
 # TODO: Admin Models and/or Forms
@@ -16,3 +16,4 @@ admin.site.register(Speaker)
 admin.site.register(SessionLocation)
 admin.site.register(Proposal)
 admin.site.register(Price)
+admin.site.register(NavBarItem)

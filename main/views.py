@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 
-from .models import ConferenceDetail
+from .models import ConferenceDetail, NavBarItem
 
 
 # TODO: Implement some views
@@ -37,7 +37,14 @@ def index(request):
         "room": "ROOM",
         "time": "TIME"
     })
+    navbar = NavBarItem.objects.all()
+    for nav in navbar:
+        print(nav.type)
+        print(nav.destinationPath)
     conferenceDetail = ConferenceDetail.objects.all()
-    conferenceDetail[0]
+    # TODO: Fix this so it's not so dangerous....
     return render(request, 'main/index.html',
-                  {'speakers': speakers, 'schedule': schedule, 'banner': conferenceDetail[0]})
+                  {'speakers': speakers,
+                   'schedule': schedule,
+                   'banner': conferenceDetail[0],
+                   'navbar': navbar})
