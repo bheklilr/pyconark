@@ -37,7 +37,7 @@ def index(request):
         "room": "ROOM",
         "time": "TIME"
     })
-    navbar = NavBarItem.objects.all()
+    navbar = NavBarItem.objects.filter(isActive=True)
 
     conferenceDetail = ConferenceDetail.objects.all()
     # TODO: Fix this so it's not so dangerous....
