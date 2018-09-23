@@ -89,6 +89,26 @@ if 'DATABASE_URL' in os.environ:
 
     DATABASES = {'default': dj_database_url.config()}
 
+if os.getenv('GAE_SQL_CON_STR'):
+    DATABASES = {
+        'default': {
+            # If you are using Cloud SQL for MySQL rather than PostgreSQL, set
+            # 'ENGINE': 'django.db.backends.mysql' instead of the following.
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'polls',
+            'USER': os.getenv("GAE_SQL_USER"),
+            'PASSWORD': os.getenv("GAE_SQL_PASS"),
+            # For MySQL, set 'PORT': '3306' instead of the following. Any Cloud
+            # SQL Proxy instances running locally must also be set to tcp:3306.
+            'PORT': '5432',
+        }
+    }
+    DATABASES['default']['HOST'] = '/cloudsql/' + os.getenv("GAE_SQL_CON_STR")
+    if os.getenv('GAE_INSTANCE'):
+        pass
+    else:
+        DATABASES['default']['HOST'] = '127.0.0.1'
+    # [END dbconfig]
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -131,6 +151,9 @@ STATICFILES_DIRS = (
   os.path.join(BASE_DIR, 'static/'),
 )
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+
+# This is to get rid of the warning in the logs about Default Behavior
+AWS_DEFAULT_ACL = None
 
 AWS_ACCESS_KEY_ID = os.getenv('S3_ACCESS_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('S3_SECRET')
