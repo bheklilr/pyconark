@@ -20,3 +20,12 @@ python manage.py install_main
 ```
 
 
+## Known Issues
+[_] - Issue reported from s3 dependencies 
+```commandline
+ /app/.heroku/python/lib/python3.6/site-packages/storages/backends/s3boto3.py:282: UserWarning: The default behavior 
+ of S3Boto3Storage is insecure and will change in django-storages 2.0. By default files and new buckets are saved 
+ with an ACL of 'public-read' (globally publicly readable). Version 2.0 will default to using the bucket's ACL. 
+ To opt into the new behavior set AWS_DEFAULT_ACL = None, otherwise to silence this warning explicitly 
+ set AWS_DEFAULT_ACL.
+```

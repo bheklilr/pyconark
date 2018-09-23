@@ -132,9 +132,9 @@ STATICFILES_DIRS = (
 )
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
-AWS_ACCESS_KEY_ID = os.getenv('S3_ACCESS_ID')  # type: str # TODO: Externalize in System Variables
-AWS_SECRET_ACCESS_KEY = os.getenv('S3_SECRET') # TODO: Externalize in System Variables
-AWS_STORAGE_BUCKET_NAME = 'pyconark-dev-a' # TODO: Externalize in System Variables
+AWS_ACCESS_KEY_ID = os.getenv('S3_ACCESS_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('S3_SECRET')
+AWS_STORAGE_BUCKET_NAME = 'pyconark-dev-a'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
