@@ -5,8 +5,12 @@ things for easier testing and install
 Use "python manage.py install_main"
 """
 
+import datetime
+
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
+
+from main.models import ConferenceDetail, ConferenceLocation, NavBarItem
 
 DUMMY_POST_MESSAGE = """
             <p>
@@ -51,6 +55,31 @@ class Command(BaseCommand):
     help = 'Help us Obi Wan, you\'re our only hope. '
 
     def _createDefaultDatabaseContent(self):
+        dateFormatStr = "%m-%d-%Y %H:%M:%S"
+        conferenceDate = "10-05-2019 10:00:00"
+
+        # Conference Location
+        conferenceLocation = ConferenceLocation()
+        conferenceLocation.address = "123 somewhere Rd"
+        conferenceLocation.city = "Somwhere City"
+        conferenceLocation.name = "University Auditorium"
+        conferenceLocation.zip_code = 72204
+        conferenceLocation.save()
+
+        # Conference Detail
+        conferenceDetail = ConferenceDetail()
+        conferenceDetail.start_dt = datetime.datetime.strptime(conferenceDate, dateFormatStr)
+        conferenceDetail.title = "PyCon Arkansas 2019"
+        conferenceDetail.location = conferenceLocation
+        conferenceDetail.save()
+
+        # Create the Home button on the nav bar
+        navItem = NavBarItem()
+        navItem.destinationPath = "#"
+        navItem.display = "Home"
+        navItem.isActive = True
+        navItem.type = "LABEL"
+        navItem.save()
         # TODO: Create some default objects and data
         pass
 
@@ -79,11 +108,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Clear the database, and re-apply schema
         self._handle_migrations()
+        self._createDefaultDatabaseContent()
         # Pull in all the static resources
         self._collect_static_resources()
         # Populate the database
         # TODO: Create methods that create some default data, from file or otherwise.
         # Create Super user
-        self._create_user_interactive()
-        print("The application is starting for testing...")
-        self._start_application()
+
+        # self._create_user_interactive()

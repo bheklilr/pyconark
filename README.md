@@ -4,14 +4,15 @@ A bare bones conference website.
 
 Single HTML page with some dynamically loaded "Tiles" will make up most of the content in this site. 
 
-## Python 2.7
-pip install -r requirements.txt  
+## Officially Supporting Python 3.6.6 
+pip install -r requirements.txt
 
-## Python 3.7
-pip install -r requirements.py3.txt
-Redactor is not compatible with the version of DJango yet. Will need more work before this is viable. 
-Need a way to use whatever WYSIWIG we want, without modifying model code.
+This is the version Heroku uses, so for the short-term, other versions are not being tested, 
+and their requirements files not updated.
 
+TODO: Update Python 3.7 requirements and test
+TODO: Determine if Python 2.7 is even worth keeping up with at this point.
+  
 ## Initial Setup
 There's a command hook that can be used to do the whole initial setup and start the server fresh.
 ```commandline
@@ -19,3 +20,12 @@ python manage.py install_main
 ```
 
 
+## Known Issues
+[_] - Issue reported from s3 dependencies 
+```commandline
+ /app/.heroku/python/lib/python3.6/site-packages/storages/backends/s3boto3.py:282: UserWarning: The default behavior 
+ of S3Boto3Storage is insecure and will change in django-storages 2.0. By default files and new buckets are saved 
+ with an ACL of 'public-read' (globally publicly readable). Version 2.0 will default to using the bucket's ACL. 
+ To opt into the new behavior set AWS_DEFAULT_ACL = None, otherwise to silence this warning explicitly 
+ set AWS_DEFAULT_ACL.
+```

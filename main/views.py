@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 
+from .models import ConferenceDetail, NavBarItem
+
 
 # TODO: Implement some views
 def index(request):
@@ -35,5 +37,12 @@ def index(request):
         "room": "ROOM",
         "time": "TIME"
     })
+    navbar = NavBarItem.objects.filter(isActive=True)
 
-    return render(request, 'main/index.html', {'speakers': speakers, 'schedule': schedule})
+    conferenceDetail = ConferenceDetail.objects.all()
+    # TODO: Fix this so it's not so dangerous....
+    return render(request, 'main/index.html',
+                  {'speakers': speakers,
+                   'schedule': schedule,
+                   'banner': conferenceDetail[0],
+                   'navbar': navbar})
