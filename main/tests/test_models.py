@@ -207,7 +207,7 @@ class ConferenceSponsorTest(TestCase):
     '''
     @classmethod
     def setUpTestData(cls):
-        ConferenceSponsor.object.create(
+        ConferenceSponsor.objects.create(
             name = 'coolest company',
             img = File(open(os.path.join(BASE_DIR, 'tests', 'profile.png'))),
             link = 'https://coolcompany.co',
@@ -227,11 +227,19 @@ class NavBarItemTest(TestCase):
     '''
     @classmethod
     def setUpTestData(cls):
-        NavBarItem.objects.create(
+        first_item = NavBarItem.objects.create(
             display = 'nav item',
             sortOrder = 1,
             isActive = True
         )
+
+        NavBarItem.objects.create(
+            display = 'nav item 2',
+            sortOrder = 2,
+            isActive = True,
+            parentItem = first_item
+        )
+
 
     def test_looking_at_navitems(self):
         nav_bar_item = NavBarItem.objects.get(id=1)
