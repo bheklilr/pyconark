@@ -28,8 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "pyconark.herokuapp.com",
+    "pyconark-gcp-dev-2019.appspot.com",
 ]
-
 
 # Application definition
 
@@ -74,7 +74,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pyconark.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
@@ -84,31 +83,36 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+# For Running in Heroku
 if 'DATABASE_URL' in os.environ:
     import dj_database_url
-
     DATABASES = {'default': dj_database_url.config()}
 
-if os.getenv('GAE_SQL_CON_STR'):
+# If we're running in a GCP Instance, then we'll setup the Datasource for Google Cloud SQL
+if os.environ('GAE_INSTANCE'):
+    print("Setting up Google Cloud Platform Datasource...")
     DATABASES = {
         'default': {
             # If you are using Cloud SQL for MySQL rather than PostgreSQL, set
             # 'ENGINE': 'django.db.backends.mysql' instead of the following.
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'polls',
-            'USER': os.getenv("GAE_SQL_USER"),
-            'PASSWORD': os.getenv("GAE_SQL_PASS"),
+            'NAME': 'pyconark',
+            'USER': os.environ("GCP_SQL_USER"),  # TODO: Bake into app.yaml generated from script
+            'PASSWORD': os.environ("GCP_SQL_PASS"),  # TODO: Bake into app.yaml generated from script
             # For MySQL, set 'PORT': '3306' instead of the following. Any Cloud
             # SQL Proxy instances running locally must also be set to tcp:3306.
             'PORT': '5432',
+            'HOST': '/cloudsql/' + os.environ("GCP_SQL_CON_STR")  # TODO: Bake into app.yaml generated from script
         }
     }
-    DATABASES['default']['HOST'] = '/cloudsql/' + os.getenv("GAE_SQL_CON_STR")
-    if os.getenv('GAE_INSTANCE'):
-        pass
-    else:
+    # If you want to run against GCP Cloud SQL Locally, set up the proxy and set the 'GAE_INSTANCE' variable to anything.
+    import sys
+
+    if os.environ('GAE_INSTANCE') == 'localhost':
+        print("...Using GCP SQL Proxy to Connect.")
+        # Will use Cloud SQL Proxy if not in a GCP Runtime, but environment variables are set
         DATABASES['default']['HOST'] = '127.0.0.1'
-    # [END dbconfig]
+        # [END dbconfig]
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -128,7 +132,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -142,27 +145,25 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# - https://docs.djangoproject.com/en/1.11/howto/static-files/
-# Amazon S3 Storage Configurations added later
-# - https://simpleisbetterthancomplex.com/tutorial/2017/08/01/how-to-setup-amazon-s3-in-a-django-project.html
+# This is really only meant for local development, or you don't have any other option.
 STATICFILES_DIRS = (
-  os.path.join(BASE_DIR, 'static/'),
+    os.path.join(BASE_DIR, 'static/'),
 )
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+STATIC_URL = '/static/'
 
-# This is to get rid of the warning in the logs about Default Behavior
-AWS_DEFAULT_ACL = None
-
-AWS_ACCESS_KEY_ID = os.getenv('S3_ACCESS_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('S3_SECRET')
-AWS_STORAGE_BUCKET_NAME = 'pyconark-dev-a'
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-AWS_LOCATION = 'static'
-
-STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# If you'd like to use S3 Storage, just set the environment variables S3_BUCKET_NAME, S3_SECRET, S3_ACCESS_ID
+if os.environ('S3_BUCKET_NAME'):
+    # This is to get rid of the warning in the logs about Default Behavior
+    AWS_DEFAULT_ACL = None
+    # - https://simpleisbetterthancomplex.com/tutorial/2017/08/01/how-to-setup-amazon-s3-in-a-django-project.html
+    AWS_ACCESS_KEY_ID = os.environ('S3_ACCESS_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ('S3_SECRET')
+    AWS_STORAGE_BUCKET_NAME = os.environ('S3_BUCKET_NAME')
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
+    AWS_LOCATION = 'static'
+    STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
