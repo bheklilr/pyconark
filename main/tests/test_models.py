@@ -6,7 +6,9 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from main.models import *
 
-import datetime
+import datetime, os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 class ConferenceLocationTest(TestCase):
     ''' Conference Location Tests
@@ -37,7 +39,6 @@ class ConferenceLocationTest(TestCase):
         conference_location = ConferenceLocation.objects.get(id=1)
         author = conference_location.author
         self.assertTrue(author != None)
-
 
 class ConferenceDetailTest(TestCase):
     ''' Conference Detail Tests
@@ -83,7 +84,6 @@ class ConferenceDetailTest(TestCase):
         field_label = conference_detail._meta.get_field('end_dt').verbose_name
         self.assertEquals(field_label, "End Date/Time")
 
-
 class ConferencePageTest(TestCase):
     ''' Conference Page Tests
     '''
@@ -112,3 +112,127 @@ class ConferencePageTest(TestCase):
         conference_page = ConferencePage.objects.get(id=1)
         self.assertInHTML("Here is some bod with html in it", conference_page.body)
 
+class SpeakerTest(TestCase):
+    ''' Speaker Tests
+    '''
+    @classmethod
+    def setUpTestData(cls):
+        Speaker.objects.create(
+            first_name = 'Micheal',
+            last_name = 'Scott',
+            description ='just a little stichious',
+            img = File(open(os.path.join(BASE_DIR, 'tests', 'profile.png'))),
+            phone = '501-111-2222',
+            email = 'mscott@dundermifflin.com',
+            facebook = 'https://facebook.com/micheal.scott',
+            twitter = 'https://twitter.com/micheal.scott',
+            github = 'https://github.com/micheal.scott',
+            linkedin = 'https://linkedin.com/micheal.scott'
+        )
+    
+    def test_speaker_slug(self):
+        speaker = Speaker.objects.get(id=1)
+        self.assertEquals(speaker.slug, "micheal-scott")
+
+    def test_speaker_profile_img(self):
+        speaker = Speaker.objects.get(id=1)
+        self.failUnless(open(speaker.img.path), 'file not found')
+
+class SessionLocationTest(TestCase):
+    ''' Session Location Tests
+    '''
+    @classmethod
+    def setUpTestData(cls):
+        SessionLocation.objects.create(
+            room_name = 'cains ballroom',
+            building = 'The Main Building'
+        )
+    
+    def test_speaker_slug(self):
+        session_location = SessionLocation.objects.get(id=1)
+        self.assertEquals(session_location.room_name, "cains ballroom")
+
+class ProposalTest(TestCase):
+    ''' Proposal Tests
+    '''
+    @classmethod
+    def setUpTestData(cls):
+        speaker = Speaker.objects.create(
+            first_name = 'Micheal',
+            last_name = 'Scott',
+            description ='just a little stichious',
+            img = File(open(os.path.join(BASE_DIR, 'tests', 'profile.png'))),
+            phone = '501-111-2222',
+            email = 'mscott@dundermifflin.com',
+            facebook = 'https://facebook.com/micheal.scott',
+            twitter = 'https://twitter.com/micheal.scott',
+            github = 'https://github.com/micheal.scott',
+            linkedin = 'https://linkedin.com/micheal.scott'
+        )
+
+        session_loc = SessionLocation.objects.create(
+            room_name = 'cains ballroom',
+            building = 'The Main Building'
+        )        
+
+        Proposal.objects.create(
+            title = 'GIS with GeoDjango',
+            description = 'something nice to say about G.I.S.',
+            speaker = speaker,
+            session_location = session_loc,
+            time = datetime.time(3, 0, 0)
+        )
+    
+    def test_proposal_slug(self):
+        proposal = Proposal.objects.get(id=1)
+        self.assertEquals(proposal.slug, "gis-with-geodjango")
+
+class PriceTest(TestCase):
+    ''' Price Tests
+    '''
+    @classmethod
+    def setUpTestData(cls):
+        Price.objects.create(
+            title = 'Platnium Tier',
+            description = 'for platnium folks',
+            amount = 200
+        )
+
+    def test_price_slug(self):
+        price = Price.objects.get(id=1)
+        self.assertEqual(price.slug, 'platnium-tier')
+
+class ConferenceSponsorTest(TestCase):
+    ''' Conference Sponsor Tests
+    '''
+    @classmethod
+    def setUpTestData(cls):
+        ConferenceSponsor.object.create(
+            name = 'coolest company',
+            img = File(open(os.path.join(BASE_DIR, 'tests', 'profile.png'))),
+            link = 'https://coolcompany.co',
+            description = 'a very nice description of a sponsor'
+        )
+
+    def test_conference_sponsor_slug(self):
+        conference_sponsor = ConferenceSponsor.objects.get(id=1)
+        self.assertEqual(conference_sponsor.slug, 'coolest-company')
+
+    def test_sponsor_logo_img(self):
+        conference_sponsor = ConferenceSponsor.objects.get(id=1)
+        self.failUnless(open(conference_sponsor.img.path), 'file not found')
+
+class NavBarItemTest(TestCase):
+    ''' NavBarItem tests
+    '''
+    @classmethod
+    def setUpTestData(cls):
+        NavBarItem.objects.create(
+            display = 'nav item',
+            sortOrder = 1,
+            isActive = True
+        )
+
+    def test_looking_at_navitems(self):
+        nav_bar_item = NavBarItem.objects.get(id=1)
+        self.assertEqual(nav_bar_item.slug, 'nav-item')
