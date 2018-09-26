@@ -8,7 +8,9 @@ from .models import ConferenceDetail, NavBarItem
 
 # TODO: Implement some views
 def index(request):
-    ''' home page '''
+    ''' home page 
+    '''
+    
     speakers = []
     speakers.append({
         "name": "BOB JOHNSON",
