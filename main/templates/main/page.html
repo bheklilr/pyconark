@@ -3,37 +3,11 @@
 {% block title %}Arkansas Python Conference | {{ page_title}} {% endblock %}
 <!-- TODO: Replace Lorem Ipsum -->
 {% block content %}
-    <!--<section class="home-video-area" id="about">
-        <div class="container-fluid">
-            <div class="row justify-content-end align-items-center">
-                <div class="col-lg-4 no-padding about-right">
-                    <p class="top-title">Tutorial for beginner</p>
-                    <h1>Watch tutorial <br>
-                    Video of SaaS to start</h1>
-                    <p><span>We are here to listen from you deliver exellence</span></p>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisici
-                        ng elit, sed do eiusmod tempor incididunt ut labore et dolore. magna aliqua. Ut enim ad minim.
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore. magna aliqua. Ut enim ad minim.
-                    </p>
-                </div>
-                <section class="video-area col-lg-6 no-padding">
-                    <div class="overlay overlay-bg"></div>
-                    <div class="containers">
-                        <div class="video-content">
-                            <img class="img-fluid" src="img/about1.jpg" alt="">
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div>
-    </section>-->
-
     <!-- Start Generic Area -->
     <section class="about-generic-area section-gap">
         <div class="container border-top-generic">
             <h3 class="about-title mb-30">{{ page_title }}</h3>
+            <h4>{{ page.introduction }}</h4>
             <div class="row">
                 <div class="col-md-12">
                     {{ page.body|safe }}
