@@ -12,10 +12,10 @@ def index(request):
     '''
     navbar = NavBarItem.objects.filter(isActive=True)
     speakers = speakers.objects.all()
-    schedule = Proposal.objects.filter(isActive=True)
+    schedule = Proposal.objects.filter(accepted=True)
     conferenceDetail = ConferenceDetail.objects.all()
 
-    
+
     # TODO: Fix this so it's not so dangerous....
     return render(request, 'main/index.html',
                   {'speakers': speakers,
