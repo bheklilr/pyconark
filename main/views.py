@@ -11,7 +11,7 @@ def index(request):
     ''' home page 
     '''
     navbar = NavBarItem.objects.filter(isActive=True)
-    speakers = speakers.objects.all()
+    speakers = Speaker.objects.all()
     schedule = Proposal.objects.filter(accepted=True)
     conferenceDetail = ConferenceDetail.objects.all()
 
@@ -22,3 +22,23 @@ def index(request):
                    'schedule': schedule,
                    'banner': conferenceDetail[0],
                    'navbar': navbar})
+
+def page(request, id=None, slug=None):
+    ''' page renderer. 
+            renderers a page and it's contents
+    '''
+    page = None
+    page_title = 'Pages'
+    if id:
+        page = ConferencePage.objects.get(pk=int(id))
+        page_title = page.title
+    if slug:
+        page = ConferencePage.objects.get(slug=slug)
+        page_title = page.title
+
+    return render(request, 'main/page.html',{
+        'page_title':page_title,
+        'page' : page,
+        })
+
+        

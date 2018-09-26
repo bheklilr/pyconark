@@ -59,7 +59,7 @@ class ConferencePage(models.Model):
     body = RedactorField(verbose_name='body', upload_to='page_body')
     sidebar = RedactorField(verbose_name='sidebar', null=True, blank=True, upload_to='page_sidebar_body')
     author = models.ForeignKey(User)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True) # make pages unique
     date_created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
 

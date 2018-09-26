@@ -85,8 +85,23 @@ class MainViewTest(TestCase):
             isActive = True,
             parentItem = first_item
         )
+
+        ConferencePage.objects.create(
+            title = 'Test Page',
+            introduction = 'my test introduction',
+            body = "<b>Here is some bod with html in it</b>",
+            sidebar = None,
+            author = test_user
+        )
     
     def test_index(self):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
 
+    def test_page_by_slug(self):
+        response = self.client.get('/pages/test-page/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_page_by_id(self):
+        response = self.client.get('/pages/1/')
+        self.assertEqual(response.status_code, 200)
