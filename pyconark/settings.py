@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'storages',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -84,31 +85,31 @@ DATABASES = {
     }
 }
 # For Running in Heroku
-if 'DATABASE_URL' in os.environ:
+if os.getenv('DATABASE_URL'):
     import dj_database_url
     DATABASES = {'default': dj_database_url.config()}
 
 # If we're running in a GCP Instance, then we'll setup the Datasource for Google Cloud SQL
-if os.environ('GAE_INSTANCE'):
+if os.getenv('GAE_INSTANCE'):
     print("Setting up Google Cloud Platform Datasource...")
     DATABASES = {
         'default': {
             # If you are using Cloud SQL for MySQL rather than PostgreSQL, set
             # 'ENGINE': 'django.db.backends.mysql' instead of the following.
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'pyconark',
-            'USER': os.environ("GCP_SQL_USER"),  # TODO: Bake into app.yaml generated from script
-            'PASSWORD': os.environ("GCP_SQL_PASS"),  # TODO: Bake into app.yaml generated from script
+            'NAME': os.getenv(''),
+            'USER': os.getenv("GCP_SQL_USER"),  # TODO: Bake into app.yaml generated from script
+            'PASSWORD': os.getenv("GCP_SQL_PASS"),  # TODO: Bake into app.yaml generated from script
             # For MySQL, set 'PORT': '3306' instead of the following. Any Cloud
             # SQL Proxy instances running locally must also be set to tcp:3306.
             'PORT': '5432',
-            'HOST': '/cloudsql/' + os.environ("GCP_SQL_CON_STR")  # TODO: Bake into app.yaml generated from script
+            'HOST': '/cloudsql/' + os.getenv("GCP_SQL_CON_STR")  # TODO: Bake into app.yaml generated from script
         }
     }
     # If you want to run against GCP Cloud SQL Locally, set up the proxy and set the 'GAE_INSTANCE' variable to anything.
     import sys
 
-    if os.environ('GAE_INSTANCE') == 'localhost':
+    if os.getenv('GAE_INSTANCE') == 'localhost':
         print("...Using GCP SQL Proxy to Connect.")
         # Will use Cloud SQL Proxy if not in a GCP Runtime, but environment variables are set
         DATABASES['default']['HOST'] = '127.0.0.1'
@@ -153,13 +154,13 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 STATIC_URL = '/static/'
 
 # If you'd like to use S3 Storage, just set the environment variables S3_BUCKET_NAME, S3_SECRET, S3_ACCESS_ID
-if os.environ('S3_BUCKET_NAME'):
+if os.getenv('S3_BUCKET_NAME'):
     # This is to get rid of the warning in the logs about Default Behavior
     AWS_DEFAULT_ACL = None
     # - https://simpleisbetterthancomplex.com/tutorial/2017/08/01/how-to-setup-amazon-s3-in-a-django-project.html
-    AWS_ACCESS_KEY_ID = os.environ('S3_ACCESS_ID')
-    AWS_SECRET_ACCESS_KEY = os.environ('S3_SECRET')
-    AWS_STORAGE_BUCKET_NAME = os.environ('S3_BUCKET_NAME')
+    AWS_ACCESS_KEY_ID = os.getenv('S3_ACCESS_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('S3_SECRET')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('S3_BUCKET_NAME')
     AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
     AWS_S3_OBJECT_PARAMETERS = {
         'CacheControl': 'max-age=86400',
