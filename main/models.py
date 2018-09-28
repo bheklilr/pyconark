@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
+from django.core.files import File # for testing file uploads
 from django.db import models
 from django.utils.text import slugify
 # from redactor.fields import RedactorField
@@ -63,7 +64,7 @@ class ConferencePage(models.Model):
     body =RichTextField()
     sidebar = RichTextField()
     author = models.ForeignKey(User)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True) # make pages unique
     date_created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
 
@@ -192,19 +193,20 @@ class ConferenceSponsor(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        self.slug = slugify(self.name)
         super(ConferenceSponsor, self).save(*args, **kwargs)
 
 
 class NavBarItem(models.Model):
+    ''' NabBarItem
+            This represents any Navbar Item, link, dropdown, or dropdown item.
+    '''
     _typeChoices = [
         ("LABEL", "LABEL"),
         ("DROPDOWN", "DROPDOWN"),
         ("HREF", "HREF"),
     ]
-    '''
-    This represents any Navbar Item, link, dropdown, or dropdown item.
-    '''
+    
     display = models.CharField(max_length=36)
     slug = models.SlugField(blank=True)
     destinationPath = models.CharField(max_length=255, null=True, blank=True)
@@ -212,6 +214,8 @@ class NavBarItem(models.Model):
     parentItem = models.ForeignKey('self', null=True, blank=True, default=None)
     sortOrder = models.IntegerField(default=10)
     isActive = models.BooleanField(default=False)
+    date_created = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return self.display

@@ -3,46 +3,42 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 
-from .models import ConferenceDetail, NavBarItem
+from .models import *
 
 
 # TODO: Implement some views
 def index(request):
-    ''' home page '''
-    speakers = []
-    speakers.append({
-        "name": "BOB JOHNSON",
-        "company": "Initech",
-        "phone": "1234567890",
-        "bio": "A short description about the speaker's background and qualifications",
-        "email": "email@domain.com"
-    })
-    speakers.append({
-        "name": "Wally West",
-        "company": "Star Labs",
-        "phone": "1234567890",
-        "bio": "This guy runs really fast. He's famous, and never screws up the timeline by time traveling.",
-        "email": "email@domain.com"
-    })
-    schedule = []
-    schedule.append({
-        "title": "TITLE",
-        "name": "NAME",
-        "room": "ROOM",
-        "time": "TIME"
-    })
-    schedule.append({
-        "title": "TITLE",
-        "name": "NAME",
-        "room": "ROOM",
-        "time": "TIME"
-    })
+    ''' home page 
+    '''
     navbar = NavBarItem.objects.filter(isActive=True)
-
+    speakers = Speaker.objects.all()
+    schedule = Proposal.objects.filter(accepted=True)
     conferenceDetail = ConferenceDetail.objects.all()
+
+
     # TODO: Fix this so it's not so dangerous....
     return render(request, 'main/index.html',
                   {'speakers': speakers,
                    'schedule': schedule,
                    'banner': conferenceDetail[0],
                    'navbar': navbar})
+
+def page(request, id=None, slug=None):
+    ''' page renderer. 
+            renderers a page and it's contents
+    '''
+    page = None
+    page_title = 'Pages'
+    if id:
+        page = ConferencePage.objects.get(pk=int(id))
+        page_title = page.title
+    if slug:
+        page = ConferencePage.objects.get(slug=slug)
+        page_title = page.title
+
+    return render(request, 'main/page.html',{
+        'page_title':page_title,
+        'page' : page,
+        })
+
+        
