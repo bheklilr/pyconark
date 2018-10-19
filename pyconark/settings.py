@@ -29,6 +29,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "pyconark.herokuapp.com",
     "pyconark-gcp-dev-2019.appspot.com",
+    "pyconark-prod.herokuapp.com",
 ]
 
 # Application definition
