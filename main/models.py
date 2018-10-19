@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+# from redactor.fields import RedactorField
+from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.text import slugify
-from redactor.fields import RedactorField
 
 ''' Models for Conference Website
 '''
 
+
+
+# For CKEditor, use this -
+#  message_body = RichTextField()
 
 class ConferenceLocation(models.Model):
     ''' locations are places where events are held.
@@ -55,10 +60,10 @@ class ConferencePage(models.Model):
     '''
     title = models.CharField(max_length=120)
     introduction = models.CharField(max_length=255, null=True, blank=True)
-    body = RedactorField(verbose_name='body', upload_to='page_body')
-    sidebar = RedactorField(verbose_name='sidebar', null=True, blank=True, upload_to='page_sidebar_body')
+    body =RichTextField()
+    sidebar = RichTextField()
     author = models.ForeignKey(User)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True) # make pages unique
     date_created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
 
@@ -187,19 +192,20 @@ class ConferenceSponsor(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        self.slug = slugify(self.name)
         super(ConferenceSponsor, self).save(*args, **kwargs)
 
 
 class NavBarItem(models.Model):
+    ''' NabBarItem
+            This represents any Navbar Item, link, dropdown, or dropdown item.
+    '''
     _typeChoices = [
         ("LABEL", "LABEL"),
         ("DROPDOWN", "DROPDOWN"),
         ("HREF", "HREF"),
     ]
-    '''
-    This represents any Navbar Item, link, dropdown, or dropdown item.
-    '''
+    
     display = models.CharField(max_length=36)
     slug = models.SlugField(blank=True)
     destinationPath = models.CharField(max_length=255, null=True, blank=True)

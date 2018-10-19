@@ -88,8 +88,6 @@ class Command(BaseCommand):
         call_command('createsuperuser')
 
     def _handle_migrations(self):
-        print('...calling flush')
-        call_command('flush')
         print('...calling makemigrations')
         call_command('makemigrations')
         print('...calling migrate')
@@ -114,5 +112,4 @@ class Command(BaseCommand):
         # Populate the database
         # TODO: Create methods that create some default data, from file or otherwise.
         # Create Super user
-
         # self._create_user_interactive()

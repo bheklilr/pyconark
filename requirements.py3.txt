@@ -1,2 +1,0 @@
-Django==2.0.8
-django-wysiwyg-redactor==0.5.1

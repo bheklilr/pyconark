@@ -29,3 +29,11 @@ python manage.py install_main
  To opt into the new behavior set AWS_DEFAULT_ACL = None, otherwise to silence this warning explicitly 
  set AWS_DEFAULT_ACL.
 ```
+
+## Google App Engine Deployment
+Create a SQL Cloud Instance and set the variables appropriately
+GAE_SQL_PASS
+GAE_SQL_USER
+GAE_SQL_CON_STR
+GAE_INSTANCE
+Follow this guide https://cloud.google.com/python/django/flexible-environment

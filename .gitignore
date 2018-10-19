@@ -6,7 +6,7 @@
 .AppleDouble
 .LSOverride
 .vscode
-
+app.yaml
 # Icon must end with two \r
 Icon
 
@@ -30,6 +30,9 @@ Temporary Items
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+
+# ignoring generated uploaded files for testing....
+profile_*.png
 
 # C extensions
 *.so
