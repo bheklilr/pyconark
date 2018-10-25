@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,10 +21,10 @@ PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '!j2b-96x(#c4*%io+m*3dm!5b72k+6j7^tyfrb^%!q#&986fh7'
+SECRET_KEY = '!j2b-96x(#c4*%io+m*3dm!5b72k+6j7^tyfrb^%!q#&986fh7'  # TODO: Read from environment varriable?
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True  # TODO: Read from environment varriable?
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -80,14 +81,14 @@ WSGI_APPLICATION = 'pyconark.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-# This setup is for Dev
+# This setup is for Local Dev
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-# For Running in Heroku
+# For Heroku Deployments
 if os.getenv('DATABASE_URL'):
     import dj_database_url
     DATABASES = {'default': dj_database_url.config()}
@@ -109,18 +110,14 @@ if os.getenv('GAE_INSTANCE'):
             'HOST': '/cloudsql/' + os.getenv("GCP_SQL_CON_STR")
         }
     }
-    # If you want to run against GCP Cloud SQL Locally, set up the proxy and set the 'GAE_INSTANCE' variable to anything.
-    import sys
-
+    # If you want to run against GCP Cloud SQL Locally, set up the proxy and set the 'GAE_INSTANCE' variable to 'localhost'.
     if os.getenv('GAE_INSTANCE') == 'localhost':
         print("...Using Local GCP SQL Proxy to Connect.")
         # Will use Cloud SQL Proxy if not in a GCP Runtime, but environment variables are set
         DATABASES['default']['HOST'] = '127.0.0.1'
         # [END dbconfig]
-
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -138,22 +135,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
-# This is really only meant for local development, or you don't have any other option.
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static/'),
-)
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 # Django Suit configuration example
 SUIT_CONFIG = {
@@ -161,11 +147,9 @@ SUIT_CONFIG = {
     'ADMIN_NAME': 'Python Arkansas Conference',
     'HEADER_DATE_FORMAT': 'l, j. F Y',
     'HEADER_TIME_FORMAT': 'H:i',
-
     # forms
     'SHOW_REQUIRED_ASTERISK': True,  # Default True
     'CONFIRM_UNSAVED_CHANGES': True,  # Default True
-
     # menu
     'SEARCH_URL': '/admin/auth/user/',
     'MENU_ICONS': {
@@ -180,13 +164,11 @@ SUIT_CONFIG = {
         {'label': 'Settings', 'icon': 'icon-cog', 'models': ('auth.user', 'auth.group')},
         {'label': 'Support', 'icon': 'icon-question-sign', 'url': '/support/'},
     ),
-
     # misc
     'LIST_PER_PAGE': 15
 }
 
-STATIC_URL = '/static/'
-
+# TODO: Fix S3, because it is horribly broken.
 # If you'd like to use S3 Storage, just set the environment variables S3_BUCKET_NAME, S3_SECRET, S3_ACCESS_ID
 if os.getenv('S3_BUCKET_NAME'):
     # This is to get rid of the warning in the logs about Default Behavior
@@ -199,7 +181,16 @@ if os.getenv('S3_BUCKET_NAME'):
     AWS_S3_OBJECT_PARAMETERS = {
         'CacheControl': 'max-age=86400',
     }
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, 'static'),
+    )
     AWS_LOCATION = 'static'
     STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
+else:
+    STATIC_URL = '/static/'
+    # This is really only meant for local development, or you don't have any other option.
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, 'static'),
+    )
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')

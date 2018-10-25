@@ -225,7 +225,7 @@ $(document).ready(function(){
 
 
     // Set the date we're counting down to
-    var countDownDate = new Date("Oct 05, 2019 10:00:00").getTime();
+    var countDownDate = new Date("Oct 05, 2019 10:00:00").getTime(); //TODO: Read from database??
 
     // Update the count down every 1 second
     var x = setInterval(function() {
