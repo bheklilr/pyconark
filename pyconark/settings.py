@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'pyconark.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
+# This setup is for Dev
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -93,26 +93,26 @@ if os.getenv('DATABASE_URL'):
 
 # If we're running in a GCP Instance, then we'll setup the Datasource for Google Cloud SQL
 if os.getenv('GAE_INSTANCE'):
-    print("Setting up Google Cloud Platform Datasource...")
+    print("Setting up Google Cloud SQL Datasource...")
     DATABASES = {
         'default': {
             # If you are using Cloud SQL for MySQL rather than PostgreSQL, set
             # 'ENGINE': 'django.db.backends.mysql' instead of the following.
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv(''),
-            'USER': os.getenv("GCP_SQL_USER"),  # TODO: Bake into app.yaml generated from script
-            'PASSWORD': os.getenv("GCP_SQL_PASS"),  # TODO: Bake into app.yaml generated from script
+            'NAME': "pyconark",
+            'USER': os.getenv("GCP_SQL_USER"),
+            'PASSWORD': os.getenv("GCP_SQL_PASS"),
             # For MySQL, set 'PORT': '3306' instead of the following. Any Cloud
             # SQL Proxy instances running locally must also be set to tcp:3306.
             'PORT': '5432',
-            'HOST': '/cloudsql/' + os.getenv("GCP_SQL_CON_STR")  # TODO: Bake into app.yaml generated from script
+            'HOST': '/cloudsql/' + os.getenv("GCP_SQL_CON_STR")
         }
     }
     # If you want to run against GCP Cloud SQL Locally, set up the proxy and set the 'GAE_INSTANCE' variable to anything.
     import sys
 
     if os.getenv('GAE_INSTANCE') == 'localhost':
-        print("...Using GCP SQL Proxy to Connect.")
+        print("...Using Local GCP SQL Proxy to Connect.")
         # Will use Cloud SQL Proxy if not in a GCP Runtime, but environment variables are set
         DATABASES['default']['HOST'] = '127.0.0.1'
         # [END dbconfig]
@@ -158,30 +158,30 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 SUIT_CONFIG = {
     # header
     'ADMIN_NAME': 'Python Arkansas Conference',
-    # 'HEADER_DATE_FORMAT': 'l, j. F Y',
-    # 'HEADER_TIME_FORMAT': 'H:i',
+    'HEADER_DATE_FORMAT': 'l, j. F Y',
+    'HEADER_TIME_FORMAT': 'H:i',
 
     # forms
-    # 'SHOW_REQUIRED_ASTERISK': True,  # Default True
-    # 'CONFIRM_UNSAVED_CHANGES': True, # Default True
+    'SHOW_REQUIRED_ASTERISK': True,  # Default True
+    'CONFIRM_UNSAVED_CHANGES': True,  # Default True
 
     # menu
-    # 'SEARCH_URL': '/admin/auth/user/',
-    # 'MENU_ICONS': {
-    #    'sites': 'icon-leaf',
-    #    'auth': 'icon-lock',
-    # },
-    # 'MENU_OPEN_FIRST_CHILD': True, # Default True
-    # 'MENU_EXCLUDE': ('auth.group',),
-    # 'MENU': (
-    #     'sites',
-    #     {'app': 'auth', 'icon':'icon-lock', 'models': ('user', 'group')},
-    #     {'label': 'Settings', 'icon':'icon-cog', 'models': ('auth.user', 'auth.group')},
-    #     {'label': 'Support', 'icon':'icon-question-sign', 'url': '/support/'},
-    # ),
+    'SEARCH_URL': '/admin/auth/user/',
+    'MENU_ICONS': {
+        'sites': 'icon-leaf',
+        'auth': 'icon-lock',
+    },
+    'MENU_OPEN_FIRST_CHILD': True,  # Default True
+    'MENU_EXCLUDE': ('auth.group',),
+    'MENU': (
+        'sites',
+        {'app': 'auth', 'icon': 'icon-lock', 'models': ('user', 'group')},
+        {'label': 'Settings', 'icon': 'icon-cog', 'models': ('auth.user', 'auth.group')},
+        {'label': 'Support', 'icon': 'icon-question-sign', 'url': '/support/'},
+    ),
 
     # misc
-    # 'LIST_PER_PAGE': 15
+    'LIST_PER_PAGE': 15
 }
 
 STATIC_URL = '/static/'
